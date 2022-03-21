@@ -2,6 +2,12 @@ import re
 import sys
 import json
 
+path = sys.argv[1]
+csvFile = open(path, "r")
+csvLines = csvFile.readlines()
+jsonFile = open(re.sub(r'\.csv', ".json", path), "r")
+headers = re.split(r';', csvLines[0])
+
 aluno = r'(?:\"(?P<id>.+)\",)(?:\"(?P<nome>.+)\",)(?:\"(?P<curso>.+)\",)(?:(\d+),)(?:(\d+),)(?:(\d+),)(\d+)'
 paluno = re.compile(aluno)
 
