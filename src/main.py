@@ -1,6 +1,5 @@
 import re
 import sys
-import json
 
 path = sys.argv[1]                             # Gets path of .csv file to be converted
 csvFile = open(path, "r", encoding="utf-8")    # Open the .csv file for reading
@@ -23,24 +22,31 @@ for header in headers:
         else:
             listType.append((val.groups()[0], func.groups()[0]))
 
-print(listType)
-
+values = []
 for line in csvLines:
     cols = re.split(r',|\n', line)
     cols.pop()
     value = []
+    nToSkip = 0
     for i in range(len(headers)):
+        if nToSkip != 0:
+            nToSkip -= 1
+            pass
         if listType[i] == None:
             value.append(cols[i])
         else:
-            print(listType[i][0])
+            listSize = re.split(r',', listType[i][0])
+            rang = listSize[0] if len(listSize) == 1 else listSize[1]
+            nToSkip = rang
+            lista = []
+            for j in range(int(rang)):
+                val = cols[i + j]
+                if val != '':
+                    lista.append(int(val))
+            value.append(lista)
+    values.append(value)
 
-jsonFile = open(re.sub(r'\.csv', ".json", path), "w", encoding="utf-8")
-
-
-
-
-#Functions allowed as of the moment of implementation: max,min,avg,sum
+# Functions allowed as of the moment of implementation: max, min, avg, sum
 def applyFunction(func, l):
     n = len(l)
     res = 0
@@ -49,14 +55,32 @@ def applyFunction(func, l):
         for i in l:
             res += i
     elif func == "media":
-        res = applyFunction("Notas_sum",l)/n
-    elif func == "max":
-        res = max(l)
-    elif func == "min":
-        res = min(l)
+        for i in l:
+            res += i
+        res /= n
     else:
         res = -1
     return res
+
+
+with open(re.sub(r'\.csv', ".json", path), "w", encoding="utf-8") as jsonFile:
+    if len(values) == 0:
+        jsonFile.write("[]\n")
+    else:
+        jsonFile.write("[\n")
+        num = 0
+        for val in values:
+            jsonFile.write("\t{\n")
+            for i in range(len(val)):
+                name = headers[i] if listType[i] == None else re.search(r'(.*)\{', headers[i]).groups()[0]
+                jsonFile.write("\t\t\"{}\": {}{}\n".format(name, val[i] if type(val[i]) == list or val[i].isnumeric() else "\"{}\"".format(val[i]), "" if i == (len(val) - 1) else ","))
+            jsonFile.write("\t{}\n".format("}" if num + 1 == len(values) else "},"))
+            num += 1
+        jsonFile.write("]\n")
+
+
+
+
 
 
 
@@ -72,4 +96,4 @@ def applyFunction(func, l):
 #        lista.append(dic)
 #
 #with open("test.json", 'a', encoding='utf-8') as jsonf:
-#    jsonf.write(json.dumps(lista, indent=4))
+#    jsonf.write(json.dumps(value, indent=4))
