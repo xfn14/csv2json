@@ -27,6 +27,7 @@ test = re.compile(r'(?:[^,{.*}]|\{[^)]*\})+')
 headers = test.findall(csvLines.pop(0))[:-1]
 listType = []
 
+header_num = 0
 for header in headers:
     if header == '':
         listType.append(None)
@@ -40,6 +41,9 @@ for header in headers:
             listType.append((val.groups()[0], None))
         else:
             listType.append((val.groups()[0], func.groups()[0]))
+            headerName = headers[header_num] if listType[header_num] == None else re.search(r'(.*)\{', headers[header_num]).groups()[0]
+            headers[header_num] = re.sub(headerName, headerName + '_' + func.groups()[0], headers[header_num])
+    header_num += 1
 
 values = []
 for line in csvLines:
