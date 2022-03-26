@@ -1,6 +1,25 @@
 import re
 import sys
 
+# Functions allowed as of the moment of implementation: max, min, media, sum
+def applyFunction(func, l):
+    n = len(l)
+    res = 0
+    if func == "sum":
+        for i in l:
+            res += i
+    elif func == "media":
+        for i in l:
+            res += i
+        res /= n
+    elif func == "max":
+        res = max(l)
+    elif func == "min":
+        res = min(l)
+    else:
+        res = -1
+    return res
+
 path = sys.argv[1]                             # Gets path of .csv file to be converted
 csvFile = open(path, "r", encoding="utf-8")    # Open the .csv file for reading
 csvLines = csvFile.readlines()                 # Read the lines of .csv file
@@ -43,29 +62,12 @@ for line in csvLines:
                 val = cols[i + j]
                 if val != '':
                     lista.append(int(val))
-            value.append(lista)
+            useFunc = listType[i][1]
+            if useFunc != None:
+                value.append(applyFunction(useFunc, lista))
+            else:
+                value.append(lista)
     values.append(value)
-
-# Functions allowed as of the moment of implementation: max, min, media, sum
-def applyFunction(func, l):
-    n = len(l)
-    res = 0
-    
-    if func == "sum":
-        for i in l:
-            res += i
-    elif func == "media":
-        for i in l:
-            res += i
-        res /= n
-    elif func == "max":
-        res = max(l)
-    elif func == "min":
-        res = min(l)
-    else:
-        res = -1
-    return res
-
 
 with open(re.sub(r'\.csv', ".json", path), "w", encoding="utf-8") as jsonFile:
     if len(values) == 0:
@@ -77,27 +79,7 @@ with open(re.sub(r'\.csv', ".json", path), "w", encoding="utf-8") as jsonFile:
             jsonFile.write("\t{\n")
             for i in range(len(val)):
                 name = headers[i] if listType[i] == None else re.search(r'(.*)\{', headers[i]).groups()[0]
-                jsonFile.write("\t\t\"{}\": {}{}\n".format(name, val[i] if type(val[i]) == list or val[i].isnumeric() else "\"{}\"".format(val[i]), "" if i == (len(val) - 1) else ","))
+                jsonFile.write("\t\t\"{}\": {}{}\n".format(name, val[i] if type(val[i]) == list or type(val[i]) == int or type(val[i]) == float or val[i].isnumeric() else "\"{}\"".format(val[i]), "" if i == (len(val) - 1) else ","))
             jsonFile.write("\t{}\n".format("}" if num + 1 == len(values) else "},"))
             num += 1
         jsonFile.write("]\n")
-
-
-
-
-
-
-
-#aluno = r'(?:\"(?P<id>.+)\",)(?:\"(?P<nome>.+)\",)(?:\"(?P<curso>.+)\",)(?:(\d+),)(?:(\d+),)(?:(\d+),)(\d+)'
-#paluno = re.compile(aluno)
-#
-#lista = [] 
-#
-#for linha in sys.stdin:
-#    maluno = paluno.search(linha)
-#    if maluno:
-#        dic = maluno.groupdict()
-#        lista.append(dic)
-#
-#with open("test.json", 'a', encoding='utf-8') as jsonf:
-#    jsonf.write(json.dumps(value, indent=4))
