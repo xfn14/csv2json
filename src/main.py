@@ -46,7 +46,7 @@ for line in csvLines:
             value.append(lista)
     values.append(value)
 
-# Functions allowed as of the moment of implementation: max, min, avg, sum
+# Functions allowed as of the moment of implementation: max, min, media, sum
 def applyFunction(func, l):
     n = len(l)
     res = 0
@@ -58,6 +58,10 @@ def applyFunction(func, l):
         for i in l:
             res += i
         res /= n
+    elif func == "max":
+        res = max(l)
+    elif func == "min":
+        res = min(l)
     else:
         res = -1
     return res
