@@ -1,25 +1,6 @@
 import re
 import sys
 
-# Functions allowed as of the moment of implementation: max, min, media, sum
-def applyFunction(func, l):
-    n = len(l)
-    res = 0
-    if func == "sum":
-        for i in l:
-            res += i
-    elif func == "media":
-        for i in l:
-            res += i
-        res /= n
-    elif func == "max":
-        res = max(l)
-    elif func == "min":
-        res = min(l)
-    else:
-        res = -1
-    return res
-
 path = sys.argv[1]                             # Gets path of .csv file to be converted
 csvFile = open(path, "r", encoding="utf-8")    # Open the .csv file for reading
 csvLines = csvFile.readlines()                 # Read the lines of .csv file
@@ -44,6 +25,25 @@ for header in headers:
             headerName = headers[header_num] if listType[header_num] == None else re.search(r'(.*)\{', headers[header_num]).groups()[0]
             headers[header_num] = re.sub(headerName, headerName + '_' + func.groups()[0], headers[header_num])
     header_num += 1
+
+# Functions allowed as of the moment of implementation: max, min, media, sum
+def applyFunction(func, l):
+    n = len(l)
+    res = 0
+    if func == "sum":
+        for i in l:
+            res += i
+    elif func == "media":
+        for i in l:
+            res += i
+        res /= n
+    elif func == "max":
+        res = max(l)
+    elif func == "min":
+        res = min(l)
+    else:
+        res = -1
+    return res
 
 values = []
 for line in csvLines:
