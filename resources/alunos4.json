@@ -3,18 +3,18 @@
 		"Número": 3162,
 		"Nome": "Cândido Faísca",
 		"Curso": "Teatro",
-		"Notas_sum": 39
+		"Notas": 39
 	},
 	{
 		"Número": 7777,
 		"Nome": "Cristiano Ronaldo",
 		"Curso": "Desporto",
-		"Notas_sum": 72
+		"Notas": 72
 	},
 	{
 		"Número": 264,
 		"Nome": "Marcelo Sousa",
 		"Curso": "Ciência Política",
-		"Notas_sum": 76
+		"Notas": 76
 	}
 ]
