@@ -1,5 +1,3 @@
-from telnetlib import TSPEED
-from wsgiref.headers import tspecials
 import ply.yacc as yacc
 from tradutor_lex import tokens, literals
 
@@ -11,9 +9,9 @@ precedence = [
 ]
 
 #Dictionary of Names
-ts = []
-#ts = {}
+ts = {}
 
+#alterar a gramatica, fazer uma geral
 def p_Stat_Lista(p):
     "Stat : VAR '=' Exp"
     ts[p[1]] = p[3]
