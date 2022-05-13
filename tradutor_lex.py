@@ -12,7 +12,7 @@ def t_VAR(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
     return t
 
-r'VAR' [a-zA-Z_][a-zA-Z0-9_]* t.value
+token'VAR' [a-zA-Z_][a-zA-Z0-9_]* t.value
     
 def t_NUMBER(t):
     r'\d+(\.\d+)?'
