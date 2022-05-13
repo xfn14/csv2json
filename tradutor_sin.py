@@ -76,4 +76,4 @@ for linha in sys.stdin:
     if parser.success: 
         print("Frase valida: ", linha)
     else:
-        print("Frase Invalida.. corrija")    
+        print("Frase Invalida.. corrija")

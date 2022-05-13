@@ -72,7 +72,7 @@ for line in csvLines:
             else:
                 value.append(lista)
     values.append(value)
-
+    
 with open(re.sub(r'\.csv', ".json", path), "w", encoding="utf-8") as jsonFile:
     if len(values) == 0:
         jsonFile.write("[]\n")

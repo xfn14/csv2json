@@ -5,16 +5,20 @@ literals = ['+', '-', '/', '*', '=', '(', ')']
 
 tokens = ['VAR', 'NUMBER']
 
-t_VAR = r'[a-zA-Z_][a-zA-Z0-9_]*'
-t_NUMBER = r'\d+'
-# def t_VAR(t):
-#     r'[a-zA-Z_][a-zA-Z0-9_]*' 
+# t_VAR = r'[a-zA-Z_][a-zA-Z0-9_]*'
+# t_NUMBER = r'\d+'
 
-# def t_NUMBER(t):
-#     r'\d+(\.\d+)?'
-#     # r'\d+'
-#     t.value = float(t.value)
-#     return t
+def t_VAR(t):
+    r'[a-zA-Z_][a-zA-Z0-9_]*'
+    return t
+
+r'VAR' [a-zA-Z_][a-zA-Z0-9_]* t.value
+    
+def t_NUMBER(t):
+    r'\d+(\.\d+)?'
+    # r'\d+'
+    t.value = float(t.value)
+    return t
 
 
 # # Define a rule so we can track line numbers
@@ -38,3 +42,4 @@ def t_error(t):
     t.lexer.skip(1)
     
 lexer = lex.lex()
+
