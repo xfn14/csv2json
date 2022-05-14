@@ -13,7 +13,7 @@ Exp -> Exp '+' Exp
 
 
 
-Recursivo Descendente: (!! DUVIDAS !!)
+Recursivo Descendente: (!! DUVIDAS !!) tem de respeitar LL1
 
     Z -> Exp '$'
     Exp -> Termo Exp2 
