@@ -1,1 +1,283 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    EOL
+
+Grammar
+
+Rule 0     S' -> Statement
+Rule 1     Statement -> Expression
+Rule 2     Expression -> * * id = Equal
+Rule 3     Equal -> aspas
+Rule 4     Equal -> reto
+Rule 5     Expression -> STAT : TEXT { Expression }
+Rule 6     Expression -> EXP : TEXT { Expression }
+Rule 7     Expression -> COMMENT
+Rule 8     Expression -> DEF
+Rule 9     Expression -> % % id
+
+Terminals, with rules where they appear
+
+%                    : 9 9
+*                    : 2 2
+:                    : 5 6
+=                    : 2
+COMMENT              : 7
+DEF                  : 8
+EOL                  : 
+EXP                  : 6
+STAT                 : 5
+TEXT                 : 5 6
+aspas                : 3
+error                : 
+id                   : 2 9
+reto                 : 4
+{                    : 5 6
+}                    : 5 6
+
+Nonterminals, with rules where they appear
+
+Equal                : 2
+Expression           : 1 5 6
+Statement            : 0
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . Statement
+    (1) Statement -> . Expression
+    (2) Expression -> . * * id = Equal
+    (5) Expression -> . STAT : TEXT { Expression }
+    (6) Expression -> . EXP : TEXT { Expression }
+    (7) Expression -> . COMMENT
+    (8) Expression -> . DEF
+    (9) Expression -> . % % id
+
+    *               shift and go to state 3
+    STAT            shift and go to state 4
+    EXP             shift and go to state 5
+    COMMENT         shift and go to state 6
+    DEF             shift and go to state 7
+    %               shift and go to state 8
+
+    Statement                      shift and go to state 1
+    Expression                     shift and go to state 2
+
+state 1
+
+    (0) S' -> Statement .
+
+
+
+state 2
+
+    (1) Statement -> Expression .
+
+    $end            reduce using rule 1 (Statement -> Expression .)
+
+
+state 3
+
+    (2) Expression -> * . * id = Equal
+
+    *               shift and go to state 9
+
+
+state 4
+
+    (5) Expression -> STAT . : TEXT { Expression }
+
+    :               shift and go to state 10
+
+
+state 5
+
+    (6) Expression -> EXP . : TEXT { Expression }
+
+    :               shift and go to state 11
+
+
+state 6
+
+    (7) Expression -> COMMENT .
+
+    $end            reduce using rule 7 (Expression -> COMMENT .)
+    }               reduce using rule 7 (Expression -> COMMENT .)
+
+
+state 7
+
+    (8) Expression -> DEF .
+
+    $end            reduce using rule 8 (Expression -> DEF .)
+    }               reduce using rule 8 (Expression -> DEF .)
+
+
+state 8
+
+    (9) Expression -> % . % id
+
+    %               shift and go to state 12
+
+
+state 9
+
+    (2) Expression -> * * . id = Equal
+
+    id              shift and go to state 13
+
+
+state 10
+
+    (5) Expression -> STAT : . TEXT { Expression }
+
+    TEXT            shift and go to state 14
+
+
+state 11
+
+    (6) Expression -> EXP : . TEXT { Expression }
+
+    TEXT            shift and go to state 15
+
+
+state 12
+
+    (9) Expression -> % % . id
+
+    id              shift and go to state 16
+
+
+state 13
+
+    (2) Expression -> * * id . = Equal
+
+    =               shift and go to state 17
+
+
+state 14
+
+    (5) Expression -> STAT : TEXT . { Expression }
+
+    {               shift and go to state 18
+
+
+state 15
+
+    (6) Expression -> EXP : TEXT . { Expression }
+
+    {               shift and go to state 19
+
+
+state 16
+
+    (9) Expression -> % % id .
+
+    $end            reduce using rule 9 (Expression -> % % id .)
+    }               reduce using rule 9 (Expression -> % % id .)
+
+
+state 17
+
+    (2) Expression -> * * id = . Equal
+    (3) Equal -> . aspas
+    (4) Equal -> . reto
+
+    aspas           shift and go to state 21
+    reto            shift and go to state 22
+
+    Equal                          shift and go to state 20
+
+state 18
+
+    (5) Expression -> STAT : TEXT { . Expression }
+    (2) Expression -> . * * id = Equal
+    (5) Expression -> . STAT : TEXT { Expression }
+    (6) Expression -> . EXP : TEXT { Expression }
+    (7) Expression -> . COMMENT
+    (8) Expression -> . DEF
+    (9) Expression -> . % % id
+
+    *               shift and go to state 3
+    STAT            shift and go to state 4
+    EXP             shift and go to state 5
+    COMMENT         shift and go to state 6
+    DEF             shift and go to state 7
+    %               shift and go to state 8
+
+    Expression                     shift and go to state 23
+
+state 19
+
+    (6) Expression -> EXP : TEXT { . Expression }
+    (2) Expression -> . * * id = Equal
+    (5) Expression -> . STAT : TEXT { Expression }
+    (6) Expression -> . EXP : TEXT { Expression }
+    (7) Expression -> . COMMENT
+    (8) Expression -> . DEF
+    (9) Expression -> . % % id
+
+    *               shift and go to state 3
+    STAT            shift and go to state 4
+    EXP             shift and go to state 5
+    COMMENT         shift and go to state 6
+    DEF             shift and go to state 7
+    %               shift and go to state 8
+
+    Expression                     shift and go to state 24
+
+state 20
+
+    (2) Expression -> * * id = Equal .
+
+    $end            reduce using rule 2 (Expression -> * * id = Equal .)
+    }               reduce using rule 2 (Expression -> * * id = Equal .)
+
+
+state 21
+
+    (3) Equal -> aspas .
+
+    $end            reduce using rule 3 (Equal -> aspas .)
+    }               reduce using rule 3 (Equal -> aspas .)
+
+
+state 22
+
+    (4) Equal -> reto .
+
+    $end            reduce using rule 4 (Equal -> reto .)
+    }               reduce using rule 4 (Equal -> reto .)
+
+
+state 23
+
+    (5) Expression -> STAT : TEXT { Expression . }
+
+    }               shift and go to state 25
+
+
+state 24
+
+    (6) Expression -> EXP : TEXT { Expression . }
+
+    }               shift and go to state 26
+
+
+state 25
+
+    (5) Expression -> STAT : TEXT { Expression } .
+
+    $end            reduce using rule 5 (Expression -> STAT : TEXT { Expression } .)
+    }               reduce using rule 5 (Expression -> STAT : TEXT { Expression } .)
+
+
+state 26
+
+    (6) Expression -> EXP : TEXT { Expression } .
+
+    $end            reduce using rule 6 (Expression -> EXP : TEXT { Expression } .)
+    }               reduce using rule 6 (Expression -> EXP : TEXT { Expression } .)
+
