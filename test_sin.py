@@ -1,3 +1,4 @@
+from turtle import st
 import ply.yacc as yacc 
 from test_lex import tokens, literals
 
@@ -6,20 +7,25 @@ ts = {}
 
 def p_Statement_Simples(p):
     "Statement : Expression"
-    print(p[1])
-    
-# def p_IdList_list(p):
-#     "IdList : IdList ',' id"
-#     p[0] = p[1] + [p[3]]
+    p[0] = p[1]
 
-# def p_IdList_single(p):
-#     "IdList : id"
-#     p[0] = [p[1]] 
+def p_Statement_Lista(p):
+    "Statement : Statement Expression"
+    p[0] = p[1] + p[2]
     
 def p_Expression_EQUALS(p):
-    "Expression : '*' '*' id '=' Equal"
-    ts[p[3]] = p[5]
-    p[0] = p[3] + ' = ' + p[5] + '\n'
+    "Expression : id '=' Equal"
+    ts[p[1]] = p[3]
+    p[0] = p[1] + ' = ' + p[3] + '\n'
+
+def p_Expression_Parse(p):
+    "Expression : id aspas"
+    if(p[1] == 'yaccParse'):
+        p[0] = 'parser = yacc.yacc()\nparsed = parser.parse(' + p[2] + ')\nprint(parsed)\n'
+        
+def p_Expression_TOKENIZE(p):
+    "Expression : aspas curvo chav"
+    p[0] = 'def t_' + p[1].replace('"', '') + '(t):\n\tr\'' + p[2].replace('(', '').replace(')', '') + '\'\n\tt.value = ' + p[3].replace('{', '').replace('}', '') + '\n\treturn t\n'
 
 def p_Equal_aspas(p):
     "Equal : aspas"
@@ -28,44 +34,20 @@ def p_Equal_aspas(p):
 def p_Equal_reto(p):
     "Equal : reto"
     p[0] = p[1]
-
-# def p_Expression_LITERALS_LIST(p):
-#     "Expression : '%' LITERALS '=' IdList"
-#     p[0] = 'literals = ' + p[4] + '\n'
-
-# def p_Expression_TOKENS_LIST(p):
-#     "Expression : '%' TOKENS '=' IdList"
-#     p[0] = 'tokens = ' + p[4] + '\n'
-
-# def p_Expression_IGNORE_LIST(p):
-#     "Expression : '%' IGNORE '=' IdList"
-#     p[0] = 'ignore = ' + p[4] + '\n'
-
-# def p_Expression_LITERALS_SINGLE(p):
-#     "Expression : '%' LITERALS '=' TEXT"
-#     p[0] = 'literals = ' + p[4] + '\n'
-
-# def p_Expression_TOKENS_SINGLE(p):
-#     "Expression : '%' TOKENS '=' TEXT"
-#     p[0] = 'tokens = ' + p[4] + '\n'
-
-# def p_Expression_IGNORE_SINGLE(p):
-#     "Expression : '%' IGNORE '=' TEXT"
-#     p[0] = 'ignore = ' + p[4] + '\n'
     
-def p_Expression_STAT(p):
-    "Expression : STAT ':' TEXT '{' Expression '}'"
-    p[0] = 'def p_Statment_' + statementN + '(p):\n\t' + p[1] + ' : ' + p[3] + '\n\t' + p[5] + '\n\n'
+def p_Equal_chav(p):
+    "Equal : chav"
+    p[0] = p[1]
+
+def p_Expression_SIN(p):
+    "Expression : id '!' aspas chav"
+    global statementN
+    p[0] = 'def p_Expression_' + str(statementN) + '(t):\n\t\"' + p[1] + ' : ' + p[3].replace('"', '') + '\"\n\t' + p[4].replace('{ ', '').replace('}', '') + '\n\n'
     statementN += 1
 
-def p_Expression_EXP(p):
-    "Expression : EXP ':' TEXT '{' Expression '}'"
-    p[0] = 'def p_Expressions_' + statementN + '(p):\n\t' + p[1] + ' : ' + p[3] + '\n\t' + p[5] + '\n\n'
-    statementN += 1
-    
 def p_Expression_COMMENT(p):
     "Expression : COMMENT"
-    p[0] = '\n'
+    p[0] = ''
     
 def p_Expression_DEF(p):
     "Expression : DEF"
@@ -76,7 +58,7 @@ def p_Expression_LEX(p):
     if p[3] == 'LEX':
         p[0] = 'import ply.lex as lex\n'
     elif p[3] == 'YACC':
-        p[0] = 'import ply.yacc as yacc\n'
+        p[0] = 'lexer = lex.lex()\n\nimport ply.yacc as yacc\n'
         
 def p_error(p):
     print('Erro sintatico: ', p)
@@ -87,23 +69,20 @@ def getval(n):
         print("Undefined name", n)
     return ts.get(n,0)
     
-# def p_Expression_YACC(p):
-#     "Expression : '%' '%' id"
-#     p[0] = 'import ply.yacc as yacc\n'
-    
-# Build the parser
 parser = yacc.yacc()
-parser.ts = {}
+parser.ts = ts
 parser.contaPos = 0
 
-# Read line from input and parse it
 import sys
 parser.success = True
 program = sys.stdin.read()
-codigo = parser.parse(program)
+codigo = parser.parse(program).replace('’', '\'')
 if parser.success:
     print("Programa estruturalmente correto!")
     print(parser.ts)
+    print('\n')
     print(codigo)
+    with open("output.py", "w", encoding="utf-8") as out:
+        out.write(codigo)
 else:
     print("Programa com erros... Corrija e tente novamente!")

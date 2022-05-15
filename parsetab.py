@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = "COMMENT DEF EOL EXP STAT TEXT aspas id retoStatement : ExpressionExpression : '*' '*' id '=' EqualEqual : aspasEqual : retoExpression : STAT ':' TEXT '{' Expression '}'Expression : EXP ':' TEXT '{' Expression '}'Expression : COMMENTExpression : DEFExpression : '%' '%' id"
+_lr_signature = "left+-left*/rightUMINUSNUMBER VARstat : VAR '=' expstat : expexp : exp '+' expexp : exp '-' expexp : exp '*' expexp : exp '/' expexp : '-' exp %prec UMINUSexp : '(' exp ')'exp : NUMBERexp : VAR"
     
-_lr_action_items = {'*':([0,3,18,19,],[3,9,3,3,]),'STAT':([0,18,19,],[4,4,4,]),'EXP':([0,18,19,],[5,5,5,]),'COMMENT':([0,18,19,],[6,6,6,]),'DEF':([0,18,19,],[7,7,7,]),'%':([0,8,18,19,],[8,12,8,8,]),'$end':([1,2,6,7,16,20,21,22,25,26,],[0,-1,-7,-8,-9,-2,-3,-4,-5,-6,]),':':([4,5,],[10,11,]),'}':([6,7,16,20,21,22,23,24,25,26,],[-7,-8,-9,-2,-3,-4,25,26,-5,-6,]),'id':([9,12,],[13,16,]),'TEXT':([10,11,],[14,15,]),'=':([13,],[17,]),'{':([14,15,],[18,19,]),'aspas':([17,],[21,]),'reto':([17,],[22,]),}
+_lr_action_items = {'VAR':([0,4,5,7,8,9,10,11,],[2,13,13,13,13,13,13,13,]),'-':([0,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,],[4,-10,9,4,4,-9,4,4,4,4,4,-7,-10,9,9,-3,-4,-5,-6,-8,]),'(':([0,4,5,7,8,9,10,11,],[5,5,5,5,5,5,5,5,]),'NUMBER':([0,4,5,7,8,9,10,11,],[6,6,6,6,6,6,6,6,]),'$end':([1,2,3,6,12,13,15,16,17,18,19,20,],[0,-10,-2,-9,-7,-10,-1,-3,-4,-5,-6,-8,]),'=':([2,],[7,]),'+':([2,3,6,12,13,14,15,16,17,18,19,20,],[-10,8,-9,-7,-10,8,8,-3,-4,-5,-6,-8,]),'*':([2,3,6,12,13,14,15,16,17,18,19,20,],[-10,10,-9,-7,-10,10,10,10,10,-5,-6,-8,]),'/':([2,3,6,12,13,14,15,16,17,18,19,20,],[-10,11,-9,-7,-10,11,11,11,11,-5,-6,-8,]),')':([6,12,13,14,16,17,18,19,20,],[-9,-7,-10,20,-3,-4,-5,-6,-8,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'Statement':([0,],[1,]),'Expression':([0,18,19,],[2,23,24,]),'Equal':([17,],[20,]),}
+_lr_goto_items = {'stat':([0,],[1,]),'exp':([0,4,5,7,8,9,10,11,],[3,12,14,15,16,17,18,19,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -26,14 +26,15 @@ for _k, _v in _lr_goto_items.items():
        _lr_goto[_x][_k] = _y
 del _lr_goto_items
 _lr_productions = [
-  ("S' -> Statement","S'",1,None,None,None),
-  ('Statement -> Expression','Statement',1,'p_Statement_Simples','test_sin.py',8),
-  ('Expression -> * * id = Equal','Expression',5,'p_Expression_EQUALS','test_sin.py',20),
-  ('Equal -> aspas','Equal',1,'p_Equal_aspas','test_sin.py',25),
-  ('Equal -> reto','Equal',1,'p_Equal_reto','test_sin.py',28),
-  ('Expression -> STAT : TEXT { Expression }','Expression',6,'p_Expression_STAT','test_sin.py',55),
-  ('Expression -> EXP : TEXT { Expression }','Expression',6,'p_Expression_EXP','test_sin.py',60),
-  ('Expression -> COMMENT','Expression',1,'p_Expression_COMMENT','test_sin.py',65),
-  ('Expression -> DEF','Expression',1,'p_Expression_DEF','test_sin.py',69),
-  ('Expression -> % % id','Expression',3,'p_Expression_LEX','test_sin.py',73),
+  ("S' -> stat","S'",1,None,None,None),
+  ('stat -> VAR = exp','stat',3,'p_Expression_0','output.py',23),
+  ('stat -> exp','stat',1,'p_Expression_1','output.py',27),
+  ('exp -> exp + exp','exp',3,'p_Expression_2','output.py',31),
+  ('exp -> exp - exp','exp',3,'p_Expression_3','output.py',35),
+  ('exp -> exp * exp','exp',3,'p_Expression_4','output.py',39),
+  ('exp -> exp / exp','exp',3,'p_Expression_5','output.py',43),
+  ('exp -> - exp','exp',2,'p_Expression_6','output.py',47),
+  ('exp -> ( exp )','exp',3,'p_Expression_7','output.py',51),
+  ('exp -> NUMBER','exp',1,'p_Expression_8','output.py',55),
+  ('exp -> VAR','exp',1,'p_Expression_9','output.py',59),
 ]

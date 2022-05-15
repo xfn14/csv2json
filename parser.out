@@ -1,283 +1,395 @@
 Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 
-Unused terminals:
-
-    EOL
-
 Grammar
 
-Rule 0     S' -> Statement
-Rule 1     Statement -> Expression
-Rule 2     Expression -> * * id = Equal
-Rule 3     Equal -> aspas
-Rule 4     Equal -> reto
-Rule 5     Expression -> STAT : TEXT { Expression }
-Rule 6     Expression -> EXP : TEXT { Expression }
-Rule 7     Expression -> COMMENT
-Rule 8     Expression -> DEF
-Rule 9     Expression -> % % id
+Rule 0     S' -> stat
+Rule 1     stat -> VAR = exp
+Rule 2     stat -> exp
+Rule 3     exp -> exp + exp
+Rule 4     exp -> exp - exp
+Rule 5     exp -> exp * exp
+Rule 6     exp -> exp / exp
+Rule 7     exp -> - exp
+Rule 8     exp -> ( exp )
+Rule 9     exp -> NUMBER
+Rule 10    exp -> VAR
 
 Terminals, with rules where they appear
 
-%                    : 9 9
-*                    : 2 2
-:                    : 5 6
-=                    : 2
-COMMENT              : 7
-DEF                  : 8
-EOL                  : 
-EXP                  : 6
-STAT                 : 5
-TEXT                 : 5 6
-aspas                : 3
+(                    : 8
+)                    : 8
+*                    : 5
++                    : 3
+-                    : 4 7
+/                    : 6
+=                    : 1
+NUMBER               : 9
+VAR                  : 1 10
 error                : 
-id                   : 2 9
-reto                 : 4
-{                    : 5 6
-}                    : 5 6
 
 Nonterminals, with rules where they appear
 
-Equal                : 2
-Expression           : 1 5 6
-Statement            : 0
+exp                  : 1 2 3 3 4 4 5 5 6 6 7 8
+stat                 : 0
 
 Parsing method: LALR
 
 state 0
 
-    (0) S' -> . Statement
-    (1) Statement -> . Expression
-    (2) Expression -> . * * id = Equal
-    (5) Expression -> . STAT : TEXT { Expression }
-    (6) Expression -> . EXP : TEXT { Expression }
-    (7) Expression -> . COMMENT
-    (8) Expression -> . DEF
-    (9) Expression -> . % % id
+    (0) S' -> . stat
+    (1) stat -> . VAR = exp
+    (2) stat -> . exp
+    (3) exp -> . exp + exp
+    (4) exp -> . exp - exp
+    (5) exp -> . exp * exp
+    (6) exp -> . exp / exp
+    (7) exp -> . - exp
+    (8) exp -> . ( exp )
+    (9) exp -> . NUMBER
+    (10) exp -> . VAR
 
-    *               shift and go to state 3
-    STAT            shift and go to state 4
-    EXP             shift and go to state 5
-    COMMENT         shift and go to state 6
-    DEF             shift and go to state 7
-    %               shift and go to state 8
+    VAR             shift and go to state 2
+    -               shift and go to state 4
+    (               shift and go to state 5
+    NUMBER          shift and go to state 6
 
-    Statement                      shift and go to state 1
-    Expression                     shift and go to state 2
+    stat                           shift and go to state 1
+    exp                            shift and go to state 3
 
 state 1
 
-    (0) S' -> Statement .
+    (0) S' -> stat .
 
 
 
 state 2
 
-    (1) Statement -> Expression .
+    (1) stat -> VAR . = exp
+    (10) exp -> VAR .
 
-    $end            reduce using rule 1 (Statement -> Expression .)
+    =               shift and go to state 7
+    +               reduce using rule 10 (exp -> VAR .)
+    -               reduce using rule 10 (exp -> VAR .)
+    *               reduce using rule 10 (exp -> VAR .)
+    /               reduce using rule 10 (exp -> VAR .)
+    $end            reduce using rule 10 (exp -> VAR .)
 
 
 state 3
 
-    (2) Expression -> * . * id = Equal
+    (2) stat -> exp .
+    (3) exp -> exp . + exp
+    (4) exp -> exp . - exp
+    (5) exp -> exp . * exp
+    (6) exp -> exp . / exp
 
-    *               shift and go to state 9
+    $end            reduce using rule 2 (stat -> exp .)
+    +               shift and go to state 8
+    -               shift and go to state 9
+    *               shift and go to state 10
+    /               shift and go to state 11
 
 
 state 4
 
-    (5) Expression -> STAT . : TEXT { Expression }
+    (7) exp -> - . exp
+    (3) exp -> . exp + exp
+    (4) exp -> . exp - exp
+    (5) exp -> . exp * exp
+    (6) exp -> . exp / exp
+    (7) exp -> . - exp
+    (8) exp -> . ( exp )
+    (9) exp -> . NUMBER
+    (10) exp -> . VAR
 
-    :               shift and go to state 10
+    -               shift and go to state 4
+    (               shift and go to state 5
+    NUMBER          shift and go to state 6
+    VAR             shift and go to state 13
 
+    exp                            shift and go to state 12
 
 state 5
 
-    (6) Expression -> EXP . : TEXT { Expression }
+    (8) exp -> ( . exp )
+    (3) exp -> . exp + exp
+    (4) exp -> . exp - exp
+    (5) exp -> . exp * exp
+    (6) exp -> . exp / exp
+    (7) exp -> . - exp
+    (8) exp -> . ( exp )
+    (9) exp -> . NUMBER
+    (10) exp -> . VAR
 
-    :               shift and go to state 11
+    -               shift and go to state 4
+    (               shift and go to state 5
+    NUMBER          shift and go to state 6
+    VAR             shift and go to state 13
 
+    exp                            shift and go to state 14
 
 state 6
 
-    (7) Expression -> COMMENT .
+    (9) exp -> NUMBER .
 
-    $end            reduce using rule 7 (Expression -> COMMENT .)
-    }               reduce using rule 7 (Expression -> COMMENT .)
+    +               reduce using rule 9 (exp -> NUMBER .)
+    -               reduce using rule 9 (exp -> NUMBER .)
+    *               reduce using rule 9 (exp -> NUMBER .)
+    /               reduce using rule 9 (exp -> NUMBER .)
+    $end            reduce using rule 9 (exp -> NUMBER .)
+    )               reduce using rule 9 (exp -> NUMBER .)
 
 
 state 7
 
-    (8) Expression -> DEF .
+    (1) stat -> VAR = . exp
+    (3) exp -> . exp + exp
+    (4) exp -> . exp - exp
+    (5) exp -> . exp * exp
+    (6) exp -> . exp / exp
+    (7) exp -> . - exp
+    (8) exp -> . ( exp )
+    (9) exp -> . NUMBER
+    (10) exp -> . VAR
 
-    $end            reduce using rule 8 (Expression -> DEF .)
-    }               reduce using rule 8 (Expression -> DEF .)
+    -               shift and go to state 4
+    (               shift and go to state 5
+    NUMBER          shift and go to state 6
+    VAR             shift and go to state 13
 
+    exp                            shift and go to state 15
 
 state 8
 
-    (9) Expression -> % . % id
+    (3) exp -> exp + . exp
+    (3) exp -> . exp + exp
+    (4) exp -> . exp - exp
+    (5) exp -> . exp * exp
+    (6) exp -> . exp / exp
+    (7) exp -> . - exp
+    (8) exp -> . ( exp )
+    (9) exp -> . NUMBER
+    (10) exp -> . VAR
 
-    %               shift and go to state 12
+    -               shift and go to state 4
+    (               shift and go to state 5
+    NUMBER          shift and go to state 6
+    VAR             shift and go to state 13
 
+    exp                            shift and go to state 16
 
 state 9
 
-    (2) Expression -> * * . id = Equal
+    (4) exp -> exp - . exp
+    (3) exp -> . exp + exp
+    (4) exp -> . exp - exp
+    (5) exp -> . exp * exp
+    (6) exp -> . exp / exp
+    (7) exp -> . - exp
+    (8) exp -> . ( exp )
+    (9) exp -> . NUMBER
+    (10) exp -> . VAR
 
-    id              shift and go to state 13
+    -               shift and go to state 4
+    (               shift and go to state 5
+    NUMBER          shift and go to state 6
+    VAR             shift and go to state 13
 
+    exp                            shift and go to state 17
 
 state 10
 
-    (5) Expression -> STAT : . TEXT { Expression }
+    (5) exp -> exp * . exp
+    (3) exp -> . exp + exp
+    (4) exp -> . exp - exp
+    (5) exp -> . exp * exp
+    (6) exp -> . exp / exp
+    (7) exp -> . - exp
+    (8) exp -> . ( exp )
+    (9) exp -> . NUMBER
+    (10) exp -> . VAR
 
-    TEXT            shift and go to state 14
+    -               shift and go to state 4
+    (               shift and go to state 5
+    NUMBER          shift and go to state 6
+    VAR             shift and go to state 13
 
+    exp                            shift and go to state 18
 
 state 11
 
-    (6) Expression -> EXP : . TEXT { Expression }
+    (6) exp -> exp / . exp
+    (3) exp -> . exp + exp
+    (4) exp -> . exp - exp
+    (5) exp -> . exp * exp
+    (6) exp -> . exp / exp
+    (7) exp -> . - exp
+    (8) exp -> . ( exp )
+    (9) exp -> . NUMBER
+    (10) exp -> . VAR
 
-    TEXT            shift and go to state 15
+    -               shift and go to state 4
+    (               shift and go to state 5
+    NUMBER          shift and go to state 6
+    VAR             shift and go to state 13
 
+    exp                            shift and go to state 19
 
 state 12
 
-    (9) Expression -> % % . id
+    (7) exp -> - exp .
+    (3) exp -> exp . + exp
+    (4) exp -> exp . - exp
+    (5) exp -> exp . * exp
+    (6) exp -> exp . / exp
 
-    id              shift and go to state 16
+    +               reduce using rule 7 (exp -> - exp .)
+    -               reduce using rule 7 (exp -> - exp .)
+    *               reduce using rule 7 (exp -> - exp .)
+    /               reduce using rule 7 (exp -> - exp .)
+    $end            reduce using rule 7 (exp -> - exp .)
+    )               reduce using rule 7 (exp -> - exp .)
+
+  ! +               [ shift and go to state 8 ]
+  ! -               [ shift and go to state 9 ]
+  ! *               [ shift and go to state 10 ]
+  ! /               [ shift and go to state 11 ]
 
 
 state 13
 
-    (2) Expression -> * * id . = Equal
+    (10) exp -> VAR .
 
-    =               shift and go to state 17
+    +               reduce using rule 10 (exp -> VAR .)
+    -               reduce using rule 10 (exp -> VAR .)
+    *               reduce using rule 10 (exp -> VAR .)
+    /               reduce using rule 10 (exp -> VAR .)
+    $end            reduce using rule 10 (exp -> VAR .)
+    )               reduce using rule 10 (exp -> VAR .)
 
 
 state 14
 
-    (5) Expression -> STAT : TEXT . { Expression }
+    (8) exp -> ( exp . )
+    (3) exp -> exp . + exp
+    (4) exp -> exp . - exp
+    (5) exp -> exp . * exp
+    (6) exp -> exp . / exp
 
-    {               shift and go to state 18
+    )               shift and go to state 20
+    +               shift and go to state 8
+    -               shift and go to state 9
+    *               shift and go to state 10
+    /               shift and go to state 11
 
 
 state 15
 
-    (6) Expression -> EXP : TEXT . { Expression }
+    (1) stat -> VAR = exp .
+    (3) exp -> exp . + exp
+    (4) exp -> exp . - exp
+    (5) exp -> exp . * exp
+    (6) exp -> exp . / exp
 
-    {               shift and go to state 19
+    $end            reduce using rule 1 (stat -> VAR = exp .)
+    +               shift and go to state 8
+    -               shift and go to state 9
+    *               shift and go to state 10
+    /               shift and go to state 11
 
 
 state 16
 
-    (9) Expression -> % % id .
+    (3) exp -> exp + exp .
+    (3) exp -> exp . + exp
+    (4) exp -> exp . - exp
+    (5) exp -> exp . * exp
+    (6) exp -> exp . / exp
 
-    $end            reduce using rule 9 (Expression -> % % id .)
-    }               reduce using rule 9 (Expression -> % % id .)
+    +               reduce using rule 3 (exp -> exp + exp .)
+    -               reduce using rule 3 (exp -> exp + exp .)
+    $end            reduce using rule 3 (exp -> exp + exp .)
+    )               reduce using rule 3 (exp -> exp + exp .)
+    *               shift and go to state 10
+    /               shift and go to state 11
+
+  ! *               [ reduce using rule 3 (exp -> exp + exp .) ]
+  ! /               [ reduce using rule 3 (exp -> exp + exp .) ]
+  ! +               [ shift and go to state 8 ]
+  ! -               [ shift and go to state 9 ]
 
 
 state 17
 
-    (2) Expression -> * * id = . Equal
-    (3) Equal -> . aspas
-    (4) Equal -> . reto
+    (4) exp -> exp - exp .
+    (3) exp -> exp . + exp
+    (4) exp -> exp . - exp
+    (5) exp -> exp . * exp
+    (6) exp -> exp . / exp
 
-    aspas           shift and go to state 21
-    reto            shift and go to state 22
+    +               reduce using rule 4 (exp -> exp - exp .)
+    -               reduce using rule 4 (exp -> exp - exp .)
+    $end            reduce using rule 4 (exp -> exp - exp .)
+    )               reduce using rule 4 (exp -> exp - exp .)
+    *               shift and go to state 10
+    /               shift and go to state 11
 
-    Equal                          shift and go to state 20
+  ! *               [ reduce using rule 4 (exp -> exp - exp .) ]
+  ! /               [ reduce using rule 4 (exp -> exp - exp .) ]
+  ! +               [ shift and go to state 8 ]
+  ! -               [ shift and go to state 9 ]
+
 
 state 18
 
-    (5) Expression -> STAT : TEXT { . Expression }
-    (2) Expression -> . * * id = Equal
-    (5) Expression -> . STAT : TEXT { Expression }
-    (6) Expression -> . EXP : TEXT { Expression }
-    (7) Expression -> . COMMENT
-    (8) Expression -> . DEF
-    (9) Expression -> . % % id
+    (5) exp -> exp * exp .
+    (3) exp -> exp . + exp
+    (4) exp -> exp . - exp
+    (5) exp -> exp . * exp
+    (6) exp -> exp . / exp
 
-    *               shift and go to state 3
-    STAT            shift and go to state 4
-    EXP             shift and go to state 5
-    COMMENT         shift and go to state 6
-    DEF             shift and go to state 7
-    %               shift and go to state 8
+    +               reduce using rule 5 (exp -> exp * exp .)
+    -               reduce using rule 5 (exp -> exp * exp .)
+    *               reduce using rule 5 (exp -> exp * exp .)
+    /               reduce using rule 5 (exp -> exp * exp .)
+    $end            reduce using rule 5 (exp -> exp * exp .)
+    )               reduce using rule 5 (exp -> exp * exp .)
 
-    Expression                     shift and go to state 23
+  ! +               [ shift and go to state 8 ]
+  ! -               [ shift and go to state 9 ]
+  ! *               [ shift and go to state 10 ]
+  ! /               [ shift and go to state 11 ]
+
 
 state 19
 
-    (6) Expression -> EXP : TEXT { . Expression }
-    (2) Expression -> . * * id = Equal
-    (5) Expression -> . STAT : TEXT { Expression }
-    (6) Expression -> . EXP : TEXT { Expression }
-    (7) Expression -> . COMMENT
-    (8) Expression -> . DEF
-    (9) Expression -> . % % id
+    (6) exp -> exp / exp .
+    (3) exp -> exp . + exp
+    (4) exp -> exp . - exp
+    (5) exp -> exp . * exp
+    (6) exp -> exp . / exp
 
-    *               shift and go to state 3
-    STAT            shift and go to state 4
-    EXP             shift and go to state 5
-    COMMENT         shift and go to state 6
-    DEF             shift and go to state 7
-    %               shift and go to state 8
+    +               reduce using rule 6 (exp -> exp / exp .)
+    -               reduce using rule 6 (exp -> exp / exp .)
+    *               reduce using rule 6 (exp -> exp / exp .)
+    /               reduce using rule 6 (exp -> exp / exp .)
+    $end            reduce using rule 6 (exp -> exp / exp .)
+    )               reduce using rule 6 (exp -> exp / exp .)
 
-    Expression                     shift and go to state 24
+  ! +               [ shift and go to state 8 ]
+  ! -               [ shift and go to state 9 ]
+  ! *               [ shift and go to state 10 ]
+  ! /               [ shift and go to state 11 ]
+
 
 state 20
 
-    (2) Expression -> * * id = Equal .
+    (8) exp -> ( exp ) .
 
-    $end            reduce using rule 2 (Expression -> * * id = Equal .)
-    }               reduce using rule 2 (Expression -> * * id = Equal .)
-
-
-state 21
-
-    (3) Equal -> aspas .
-
-    $end            reduce using rule 3 (Equal -> aspas .)
-    }               reduce using rule 3 (Equal -> aspas .)
-
-
-state 22
-
-    (4) Equal -> reto .
-
-    $end            reduce using rule 4 (Equal -> reto .)
-    }               reduce using rule 4 (Equal -> reto .)
-
-
-state 23
-
-    (5) Expression -> STAT : TEXT { Expression . }
-
-    }               shift and go to state 25
-
-
-state 24
-
-    (6) Expression -> EXP : TEXT { Expression . }
-
-    }               shift and go to state 26
-
-
-state 25
-
-    (5) Expression -> STAT : TEXT { Expression } .
-
-    $end            reduce using rule 5 (Expression -> STAT : TEXT { Expression } .)
-    }               reduce using rule 5 (Expression -> STAT : TEXT { Expression } .)
-
-
-state 26
-
-    (6) Expression -> EXP : TEXT { Expression } .
-
-    $end            reduce using rule 6 (Expression -> EXP : TEXT { Expression } .)
-    }               reduce using rule 6 (Expression -> EXP : TEXT { Expression } .)
+    +               reduce using rule 8 (exp -> ( exp ) .)
+    -               reduce using rule 8 (exp -> ( exp ) .)
+    *               reduce using rule 8 (exp -> ( exp ) .)
+    /               reduce using rule 8 (exp -> ( exp ) .)
+    $end            reduce using rule 8 (exp -> ( exp ) .)
+    )               reduce using rule 8 (exp -> ( exp ) .)
 
