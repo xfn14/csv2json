@@ -7,30 +7,30 @@ import ply.lex as lex
 literals = ['%', '=', '!']
 tokens = ['id', 'DEF', 'COMMENT', 'aspas', 'reto', 'chav', 'curvo']
 
-def t_curvo(p):
+def t_curvo(t):
     r'\(.*?\)'
-    return p
+    return t
 
-def t_aspas(p):
+def t_aspas(t):
     # r'\"[^"]*\"'
     r'\".*\"'
-    return p
+    return t
 
-def t_reto(p):
+def t_reto(t):
     r'\[.*?\]'
-    return p
+    return t
 
-def t_chav(p):
+def t_chav(t):
     r'{.*?}'
-    return p
+    return t
 
-def t_DEF(p):
+def t_DEF(t):
     r'(?P<indent>[ \t]*)def[ \t]*(?P<name>\w+)\s*\((?P<params>.*?)\)(?:[ \t]*->[ \t]*(?P<return>\w+))?:(?P<body>(?:\n(?P=indent)(?:[ \t]+[^\n]*)|\n)+)'
-    return p
+    return t
 
-def t_COMMENT(p):
+def t_COMMENT(t):
     r'\#.*'
-    return p
+    return t
 
 def t_id(t):
     r'[_a-zA-Z0-9_]\w*'

@@ -20,6 +20,7 @@ def t_error(t):
 lexer = lex.lex()
 
 import ply.yacc as yacc
+
 precedence = [('left','+','-'), ('left','*','/'), ('right','UMINUS')]
 ts = { }
 def p_Expression_0(t):
@@ -70,5 +71,5 @@ def getval(n):
     return ts.get(n,0)
 
 parser = yacc.yacc()
-parsed = parser.parse("5+6")
+parsed = parser.parse("3.1+4.1*7.20")
 print(parsed)
