@@ -1,6 +1,6 @@
 # csv2json
 
-CSV parser to JSON using Python with custom features built in
+CSV parser to JSON using Python with built in lists.
 
 ## Authors
 
@@ -24,3 +24,5 @@ python3 main.py <csv_path>
     - Min
     - Average
     - Sum
+
+> **_NOTE:_**  Examples contained in the resources/ directory.
