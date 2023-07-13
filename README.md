@@ -2,6 +2,8 @@
 
 CSV parser to JSON using Python with built in lists.
 
+> **_NOTE:_**  Examples contained in the resources/ directory.
+
 ## Authors
 
 - [André Vaz](https://xfn14.com)
@@ -24,5 +26,3 @@ python3 main.py <csv_path>
     - Min
     - Average
     - Sum
-
-> **_NOTE:_**  Examples contained in the resources/ directory.
